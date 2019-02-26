@@ -1,0 +1,48 @@
+class Solution(object):
+    def calcEquation(self, equations, values, queries):
+        """
+        :type equations: List[List[str]]
+        :type values: List[float]
+        :type queries: List[List[str]]
+        :rtype: List[float]
+        """
+        a={}
+        for eq,v in zip(equations,values):
+            a[(eq[0],eq[1])]=v
+            if v!=0:
+                a[(eq[1],eq[0])]=1/v
+            a[(eq[0],eq[0])]=1
+            a[(eq[1],eq[1])]=1
+        # print a.keys()
+        b={}
+        for aa,bb in equations:
+            b.setdefault(aa,[]).append(bb)
+            b.setdefault(aa,[]).append(aa)
+            b.setdefault(bb,[]).append(aa)
+            b.setdefault(bb,[]).append(bb)
+        # print b['aaa']
+        # print b['a']
+        def ff(start,end):
+            
+            checked=set()
+            def func(x,y):
+                checked.add(x)
+                # print 'xy',x,y,b[x]
+                if x not in b:return False
+                if y in b[x]:return [(x,y)]
+                for son in b[x]:
+                    if son not in checked:
+                        # print checked
+                        checked.add(son)
+                        # print son,checked
+                        sons = func(son,y)
+                        if sons:
+                            return [(x,son)]+sons
+            ls = func(start,end)
+            print ls
+            if not ls:
+                return -1.
+            return reduce(lambda x,y:x*y,map(lambda x:a[x],ls),1.)
+        return [ff(*q) for q in queries]
+            
+            
