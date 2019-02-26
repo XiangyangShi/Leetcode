@@ -1,0 +1,30 @@
+# """
+# This is Master's API interface.
+# You should not implement it, or speculate about its implementation
+# """
+#class Master(object):
+#    def guess(self, word):
+#        """
+#        :type word: str
+#        :rtype int
+#        """
+
+class Solution(object):
+    def findSecretWord(self, wordlist, master):
+        """
+        :type wordlist: List[Str]
+        :type master: Master
+        :rtype: None
+        """
+        from random import shuffle
+        def func(a,b):
+            return len([ (x,y) for (x,y) in zip(a,b) if x==y ])
+        n = 10
+        pool = wordlist[:]
+        shuffle(pool)
+        while pool and n>1:
+            a=pool.pop()
+            num = master.guess(a)
+            pool =[ x for x in pool if func(x,a)==num ]
+            n-=1
+            

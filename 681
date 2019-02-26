@@ -1,0 +1,29 @@
+class Solution(object):
+    def nextClosestTime(self, time):
+        """
+        :type time: str
+        :rtype: str
+        """
+        s =set(time[:2]+time[-2:])
+        hr = int(time[:2])
+        mt = int(time[-2:])
+        def func(s,bigger,nobig):
+            for i in range(bigger+1,nobig+1):
+                string='%02d'%i
+                if string[0] in s and string[1] in s:
+                    return string
+            return False
+        def func1(s):
+            for i in range(59):
+                string='%02d'%i
+                if string[0] in s and string[1] in s:
+                    return string
+            
+        mt2 = func(s,mt,59)
+        hr2 = func(s,hr,23)
+        mt0 = func1(s)
+        if mt2:
+            return time[:2]+":"+mt2
+        if not hr2:
+            hr2 = func(s,-1,23) 
+        return hr2+":"+mt0
